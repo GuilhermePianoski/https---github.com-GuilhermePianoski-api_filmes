@@ -1,18 +1,6 @@
 import con from './connection.js';
 
 
-/*
-let obj = 
-    {
-    nome: 'harry',
-    sinopse: 'asafsfs',
-    avaliacao: 9.2,
-    lancamento; '2023-09-06',
-    disponivel: true
-    } 
-*/
-
-
 export async function salvarFilme(filme) {
     let comando = `  
     INSERT INTO tb_filmes(nm_filme, ds_sinopse, vl_avaliacao, dt_lancamento, bt_disponivel)
@@ -24,4 +12,22 @@ export async function salvarFilme(filme) {
 
     let idFilme =  info.insertId;
     return idFilme;
+}
+
+export default async function consultarFilmes(nome) {
+    let comando = `
+      SELECT id_filme,
+        nm_filme,    
+        ds_sinopse,    
+        vl_avaliacao,
+        dt_lancamento,
+        bt_disponivel
+      FROM tb_filme
+      WHERE nm_filme like ?
+    `
+
+    let resposta = await con.query(comando, [nome]);
+    let registros = resposta[0];
+
+    return registros;
 }
