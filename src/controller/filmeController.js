@@ -4,13 +4,21 @@ import { Router } from 'express';
 const endpoints = Router()
 
 endpoints.post('/filme', async (req, resp) => {
-    let filmeObj = req.body;
+    try {
+       let filmeObj = req.body;
 
-    let id = await salvarFilme(filmeObj);
+        let id = await salvarFilme(filmeObj);
 
-    resp.send({
-        id: id
-    })
+        resp.send({
+            id: id
+       })
+    } 
+    catch (err) {
+        logErro(err);
+      resp.status(400).send(criarErro(err));
+
+      
+    }
 })
 
 export default  endpoints; 
